@@ -2,6 +2,10 @@
 
 一个基于 **Electron.js** 构建的高性能、极简主义桌面悬浮组件，用于管理日常目标与任务。界面采用 **工业感纯色银灰 (Industrial Silver-Grey)** 铝制金属质感，窗口无边框、始终置顶，并支持丝滑的拖拽排序与数据自动持久化。
 
+<p align="center">
+  <img src="./assets/screenshot.png" alt="Goal Tracker Widget" width="340" />
+</p>
+
 ---
 
 ## 📁 项目结构
@@ -50,7 +54,7 @@ reminder2/
 
 ```bash
 # 进入项目目录
-cd "c:\Users\Yuanz\Desktop\interesting project\reminder2"
+cd "your path to the project"
 
 # 安装依赖
 npm install
@@ -70,6 +74,7 @@ npm start
 |------|---------|---------|
 | **新增任务** | 底部输入框敲击 `Enter` 或点击 `+` | 向下平滑滑入动画 |
 | **完成状态** | 点击左侧复选框 | 文字灰色中划线 + 进度条增长 |
+| **内联编辑** | 单击任务文字即可直接编辑，`Enter` 或点击其他区域保存 | 卡片浮起蓝色描边 + 深阴影高亮 |
 | **删除任务** | 悬停点击右侧 🗑️ 图标 | 向右平滑淡出动画 |
 | **拖拽排序** | 抓取左侧 ⠿ 句柄 | 行缩放 + 目标位置高亮 |
 | **智能吸底** | 拖至列表下方空白处 | 直接移动至队列末尾 |

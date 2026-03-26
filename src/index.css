@@ -62,7 +62,7 @@ html, body {
   overflow: hidden;
   background: var(--bg);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   user-select: none;
@@ -194,7 +194,7 @@ html, body {
 }
 
 .progress-bar-track {
-  height: 4px;
+  height: 7px;
   background: var(--border);
   border-radius: 99px;
   overflow: hidden;
@@ -270,7 +270,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 10px;
+  padding: 11px 10px;
   border-radius: var(--radius-card);
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -288,6 +288,12 @@ html, body {
 
 .task-row.removing {
   animation: taskFadeOut 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* Editing state — subtle card highlight */
+.task-row.editing {
+  border-color: rgba(96, 165, 250, 0.55);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12), 0 2px 8px rgba(0,0,0,0.08);
 }
 
 /* ---- Drag Handle ---- */
@@ -332,7 +338,7 @@ html, body {
 
 /* Drop target indicator */
 .task-row.drag-over {
-  border-top: 2px solid var(--accent);
+  border-top: 2px solid var(--color-primary);
   margin-top: -1px;
 }
 
@@ -375,12 +381,32 @@ html, body {
 /* ---- Task Text ---- */
 .task-text {
   flex: 1;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 1.4;
   color: var(--text-primary);
   word-break: break-word;
+  cursor: default;
   transition: color var(--transition);
+}
+
+/* Inline edit input — invisible in-place editing */
+.task-edit-input {
+  user-select: text;
+  -webkit-user-select: text;
+  flex: 1;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  width: 100%;
+  padding: 0;
+  word-break: break-word;
 }
 
 .task-row.done .task-text {
@@ -512,7 +538,7 @@ html, body {
   border-radius: var(--radius-card);
   padding: 8px 12px;
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
   color: var(--text-primary);
   outline: none;

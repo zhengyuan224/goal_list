@@ -259,6 +259,8 @@ function createRow(task) {
   li.querySelector('.task-checkbox').addEventListener('change', () => toggleTask(task.id));
   // Delete
   li.querySelector('.delete-btn').addEventListener('click', () => deleteTask(task.id));
+  // Inline edit on single-click
+  li.querySelector('.task-text').addEventListener('click', () => activateInlineEdit(task.id));
 
   return li;
 }
@@ -301,6 +303,68 @@ function bindKeyboard() {
   taskInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') addTask();
     if (e.key === 'Escape') taskInput.blur();
+  });
+}
+
+// ── Inline Editing ────────────────────────────
+function activateInlineEdit(id) {
+  const row = getRow(id);
+  if (!row) return;
+
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+
+  const span = row.querySelector('.task-text');
+  if (!span) return;
+
+  // Disable drag while editing
+  row.setAttribute('draggable', 'false');
+  row.classList.add('editing');
+
+  // Replace span with input
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'task-edit-input';
+  input.value = task.text;
+  input.maxLength = 120;
+  input.setAttribute('spellcheck', 'false');
+  input.setAttribute('autocomplete', 'off');
+  span.replaceWith(input);
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+
+  async function commitEdit() {
+    const newText = input.value.trim();
+    // Restore draggable and remove editing state
+    row.setAttribute('draggable', 'true');
+    row.classList.remove('editing');
+    // Restore span (with updated or original text)
+    const newSpan = document.createElement('span');
+    newSpan.className = 'task-text';
+    newSpan.textContent = newText || task.text;
+    input.replaceWith(newSpan);
+    // Wire up click again on the new span
+    newSpan.addEventListener('click', () => activateInlineEdit(id));
+
+    if (newText && newText !== task.text) {
+      task.text = newText;
+      await saveTasks();
+    }
+  }
+
+  let committed = false;
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!committed) { committed = true; commitEdit(); }
+    }
+    if (e.key === 'Escape') {
+      input.value = task.text; // Reset
+      if (!committed) { committed = true; commitEdit(); }
+    }
+  });
+  input.addEventListener('blur', () => {
+    if (!committed) { committed = true; commitEdit(); }
   });
 }
 
